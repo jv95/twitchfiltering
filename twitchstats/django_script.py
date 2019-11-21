@@ -30,7 +30,6 @@ datatoprocess = games['data']
 number_of_streams = 0
 live_streams.objects.all().delete()
 data_uploading_start_time = time.time()
-batch_size = 100
 streams_for_bulk = []
 while paginator != '':
     games2 = requests.get(endpoint2 + paginator, headers=HEADER).json()
@@ -51,7 +50,7 @@ while paginator != '':
                                        thumbnail_url=datatoprocess[i]['thumbnail_url'],
                                        tag_ids=datatoprocess[i]['tag_ids'])
             streams_for_bulk.append(live_stream)
-            live_streams.objects.bulk_create(streams_for_bulk, 100)
+            live_streams.objects.bulk_create(streams_for_bulk, 1000)
             streams_for_bulk.clear()
 
         number_of_streams += len(datatoprocess)
