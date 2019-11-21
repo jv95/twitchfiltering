@@ -2,7 +2,7 @@ from django.db import models
 
 
 class live_streams(models.Model):
-    stream_id = models.TextField(default=None, blank=True, null=True,max_length=1024)
+    stream_id = models.TextField(default=None, blank=True, null=True, max_length=1024)
     user_id = models.TextField(default=None, blank=True, null=True)
     user_name = models.TextField(default=None, blank=True, null=True)
     game_id = models.TextField(default=None, blank=True, null=True)
@@ -14,9 +14,25 @@ class live_streams(models.Model):
     thumbnail_url = models.TextField(default=None, blank=True, null=True)
     tag_ids = models.TextField(default=None, blank=True, null=True)
 
-class performance_info(models.Model):
+
+class live_streams_performance(models.Model):
     date = models.TextField(default=None, blank=True, null=True)
     number_of_streams = models.TextField(default=None, blank=True, null=True)
+    data_requesting_time = models.TextField(default=None, blank=True, null=True)
+    data_uploading_time = models.TextField(default=None, blank=True, null=True)
+    final_time = models.TextField(default=None, blank=True, null=True)
+    request_count = models.TextField(default=None, blank=True, null=True)
+
+
+class game_identity(models.Model):
+    game_id = models.TextField(default=None, blank=True, null=True)
+    game_name = models.TextField(default=None, blank=True, null=True)
+    box_art_url = models.TextField(default=None, blank=True, null=True)
+
+
+class game_identity_performance(models.Model):
+    date = models.TextField(default=None, blank=True, null=True)
+    number_of_games = models.TextField(default=None, blank=True, null=True)
     data_requesting_time = models.TextField(default=None, blank=True, null=True)
     data_uploading_time = models.TextField(default=None, blank=True, null=True)
     final_time = models.TextField(default=None, blank=True, null=True)
