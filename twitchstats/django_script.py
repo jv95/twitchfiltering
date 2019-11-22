@@ -57,7 +57,7 @@ while paginator != '':
     else:
         break
     # make a logger here
-
+live_streams.objects.bulk_create(streams_for_bulk)
 data_uploading_time = time.time() - data_uploading_start_time
 
 performance = live_streams_performance(date=event_time,
@@ -101,7 +101,7 @@ while paginator_games != '':
         gamelist.clear()
     else:
         break
-
+game_identity.objects.bulk_create(games_for_bulk)
 data_uploading_time_games = time.time() - data_uploading_start_time_games
 
 performance_games = game_identity_performance(date=event_time_games,
