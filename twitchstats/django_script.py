@@ -70,7 +70,6 @@ performance.save()
 
 # game list
 event_time_games = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-print(event_time_games)
 requesting_start_time_games = time.time()
 
 ENDPOINT_games = " https://api.twitch.tv/helix/games/top?first=100"
@@ -79,7 +78,6 @@ request_count_games = 1
 games_games = requests.get(ENDPOINT_games, headers=HEADER).json()
 paginator_games = games_games['pagination']['cursor']
 gamelist = games_games['data']
-print(games_games)
 games_for_bulk = []
 game_identity.objects.all().delete()
 data_uploading_start_time_games = time.time()
@@ -90,17 +88,12 @@ while paginator_games != '':
     print(games2_games)
     request_count_games += 1
     if 'data' in games2_games:
-        print("data in games2_games")
         gamelist = games2_games['data']
-        print("gamelist filled with data")
         paginator_games = games2_games['pagination']['cursor'] if 'cursor' in games2_games['pagination'] else ''
-        print("paginator filled")
         for i in range(0, len(gamelist)):
-            print("ve for cyklu")
             games_identity = game_identity(game_id=gamelist[i]['id'],
                                            game_name=gamelist[i]['name'],
                                            box_art_url=gamelist[i]['box_art_url'])
-            print("game identity")
             games_for_bulk.append(games_identity)
             game_identity.objects.bulk_create(games_for_bulk, 10)
             games_for_bulk = []
@@ -110,8 +103,6 @@ while paginator_games != '':
         break
 game_identity.objects.bulk_create(games_for_bulk)
 data_uploading_time_games = time.time() - data_uploading_start_time_games
-print(request_count_games)
-print(number_of_games)
 performance_games = game_identity_performance(date=event_time_games,
                                               number_of_games=number_of_games,
                                               data_requesting_time=0,
