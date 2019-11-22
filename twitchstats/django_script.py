@@ -50,7 +50,7 @@ while paginator != '':
                                        thumbnail_url=datatoprocess[i]['thumbnail_url'],
                                        tag_ids=datatoprocess[i]['tag_ids'])
             streams_for_bulk.append(live_stream)
-            live_streams.objects.bulk_create(streams_for_bulk, 1000)
+            live_streams.objects.bulk_create(streams_for_bulk, 10000)
             streams_for_bulk = []
         number_of_streams += len(datatoprocess)
         datatoprocess.clear()
@@ -85,7 +85,6 @@ number_of_games = 0
 
 while paginator_games != '':
     games2_games = requests.get(endpoint2_games + paginator_games, headers=HEADER).json()
-    print(games2_games)
     request_count_games += 1
     if 'data' in games2_games:
         gamelist = games2_games['data']
@@ -109,3 +108,4 @@ performance_games = game_identity_performance(date=event_time_games,
                                               data_uploading_time=0,
                                               final_time=data_uploading_time_games,
                                               request_count=request_count_games)
+performance_games.save()
