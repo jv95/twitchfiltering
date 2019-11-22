@@ -31,42 +31,42 @@ number_of_streams = 0
 live_streams.objects.all().delete()
 data_uploading_start_time = time.time()
 streams_for_bulk = []
-while paginator != '':
-    games2 = requests.get(endpoint2 + paginator, headers=HEADER).json()
-    request_count += 1
-    if 'data' in games2:
-        datatoprocess += games2['data']
-        paginator = games2['pagination']['cursor'] if 'cursor' in games2['pagination'] else ''
-        for i in range(0, len(datatoprocess)):
-            live_stream = live_streams(stream_id=datatoprocess[i]['id'],
-                                       user_id=datatoprocess[i]['user_id'],
-                                       user_name=datatoprocess[i]['user_name'],
-                                       game_id=datatoprocess[i]['game_id'],
-                                       type=datatoprocess[i]['type'],
-                                       title=datatoprocess[i]['title'],
-                                       viewer_count=datatoprocess[i]['viewer_count'],
-                                       started_at=datatoprocess[i]['started_at'],
-                                       language=datatoprocess[i]['language'],
-                                       thumbnail_url=datatoprocess[i]['thumbnail_url'],
-                                       tag_ids=datatoprocess[i]['tag_ids'])
-            streams_for_bulk.append(live_stream)
-            live_streams.objects.bulk_create(streams_for_bulk, 1000)
-            streams_for_bulk = []
-        number_of_streams += len(datatoprocess)
-        datatoprocess.clear()
-    else:
-        break
-    # make a logger here
-live_streams.objects.bulk_create(streams_for_bulk)
-data_uploading_time = time.time() - data_uploading_start_time
-
-performance = live_streams_performance(date=event_time,
-                                       number_of_streams=number_of_streams,
-                                       data_requesting_time=0,
-                                       data_uploading_time=0,
-                                       final_time=data_uploading_time,
-                                       request_count=request_count)
-performance.save()
+# while paginator != '':
+#     games2 = requests.get(endpoint2 + paginator, headers=HEADER).json()
+#     request_count += 1
+#     if 'data' in games2:
+#         datatoprocess = games2['data']
+#         paginator = games2['pagination']['cursor'] if 'cursor' in games2['pagination'] else ''
+#         for i in range(0, len(datatoprocess)):
+#             live_stream = live_streams(stream_id=datatoprocess[i]['id'],
+#                                        user_id=datatoprocess[i]['user_id'],
+#                                        user_name=datatoprocess[i]['user_name'],
+#                                        game_id=datatoprocess[i]['game_id'],
+#                                        type=datatoprocess[i]['type'],
+#                                        title=datatoprocess[i]['title'],
+#                                        viewer_count=datatoprocess[i]['viewer_count'],
+#                                        started_at=datatoprocess[i]['started_at'],
+#                                        language=datatoprocess[i]['language'],
+#                                        thumbnail_url=datatoprocess[i]['thumbnail_url'],
+#                                        tag_ids=datatoprocess[i]['tag_ids'])
+#             streams_for_bulk.append(live_stream)
+#             live_streams.objects.bulk_create(streams_for_bulk, 1000)
+#             streams_for_bulk = []
+#         number_of_streams += len(datatoprocess)
+#         datatoprocess.clear()
+#     else:
+#         break
+#     # make a logger here
+# live_streams.objects.bulk_create(streams_for_bulk)
+# data_uploading_time = time.time() - data_uploading_start_time
+#
+# performance = live_streams_performance(date=event_time,
+#                                        number_of_streams=number_of_streams,
+#                                        data_requesting_time=0,
+#                                        data_uploading_time=0,
+#                                        final_time=data_uploading_time,
+#                                        request_count=request_count)
+# performance.save()
 
 # game list
 event_time_games = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
@@ -79,6 +79,7 @@ request_count_games = 1
 games_games = requests.get(ENDPOINT_games, headers=HEADER).json()
 paginator_games = games_games['pagination']['cursor']
 gamelist = games_games['data']
+print(games_games)
 games_for_bulk = []
 game_identity.objects.all().delete()
 data_uploading_start_time_games = time.time()
@@ -86,16 +87,22 @@ number_of_games = 0
 
 while paginator_games != '':
     games2_games = requests.get(endpoint2_games + paginator_games, headers=HEADER).json()
+    print(games2_games)
     request_count_games += 1
     if 'data' in games2_games:
-        gamelist += games2_games['data']
+        print("data in games2_games")
+        gamelist = games2_games['data']
+        print("gamelist filled with data")
         paginator_games = games2_games['pagination']['cursor'] if 'cursor' in games2_games['pagination'] else ''
+        print("paginator filled")
         for i in range(0, len(gamelist)):
+            print("ve for cyklu")
             games_identity = game_identity(game_id=gamelist[i]['id'],
                                            game_name=gamelist[i]['name'],
                                            box_art_url=gamelist[i]['box_art_url'])
+            print("game identity")
             games_for_bulk.append(games_identity)
-            game_identity.objects.bulk_create(games_for_bulk, 100)
+            game_identity.objects.bulk_create(games_for_bulk, 10)
             games_for_bulk = []
         number_of_games += len(gamelist)
         gamelist.clear()
@@ -103,7 +110,8 @@ while paginator_games != '':
         break
 game_identity.objects.bulk_create(games_for_bulk)
 data_uploading_time_games = time.time() - data_uploading_start_time_games
-
+print(request_count_games)
+print(number_of_games)
 performance_games = game_identity_performance(date=event_time_games,
                                               number_of_games=number_of_games,
                                               data_requesting_time=0,
