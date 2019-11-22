@@ -31,42 +31,42 @@ number_of_streams = 0
 live_streams.objects.all().delete()
 data_uploading_start_time = time.time()
 streams_for_bulk = []
-# while paginator != '':
-#     games2 = requests.get(endpoint2 + paginator, headers=HEADER).json()
-#     request_count += 1
-#     if 'data' in games2:
-#         datatoprocess = games2['data']
-#         paginator = games2['pagination']['cursor'] if 'cursor' in games2['pagination'] else ''
-#         for i in range(0, len(datatoprocess)):
-#             live_stream = live_streams(stream_id=datatoprocess[i]['id'],
-#                                        user_id=datatoprocess[i]['user_id'],
-#                                        user_name=datatoprocess[i]['user_name'],
-#                                        game_id=datatoprocess[i]['game_id'],
-#                                        type=datatoprocess[i]['type'],
-#                                        title=datatoprocess[i]['title'],
-#                                        viewer_count=datatoprocess[i]['viewer_count'],
-#                                        started_at=datatoprocess[i]['started_at'],
-#                                        language=datatoprocess[i]['language'],
-#                                        thumbnail_url=datatoprocess[i]['thumbnail_url'],
-#                                        tag_ids=datatoprocess[i]['tag_ids'])
-#             streams_for_bulk.append(live_stream)
-#             live_streams.objects.bulk_create(streams_for_bulk, 1000)
-#             streams_for_bulk = []
-#         number_of_streams += len(datatoprocess)
-#         datatoprocess.clear()
-#     else:
-#         break
-#     # make a logger here
-# live_streams.objects.bulk_create(streams_for_bulk)
-# data_uploading_time = time.time() - data_uploading_start_time
-#
-# performance = live_streams_performance(date=event_time,
-#                                        number_of_streams=number_of_streams,
-#                                        data_requesting_time=0,
-#                                        data_uploading_time=0,
-#                                        final_time=data_uploading_time,
-#                                        request_count=request_count)
-# performance.save()
+while paginator != '':
+    games2 = requests.get(endpoint2 + paginator, headers=HEADER).json()
+    request_count += 1
+    if 'data' in games2:
+        datatoprocess = games2['data']
+        paginator = games2['pagination']['cursor'] if 'cursor' in games2['pagination'] else ''
+        for i in range(0, len(datatoprocess)):
+            live_stream = live_streams(stream_id=datatoprocess[i]['id'],
+                                       user_id=datatoprocess[i]['user_id'],
+                                       user_name=datatoprocess[i]['user_name'],
+                                       game_id=datatoprocess[i]['game_id'],
+                                       type=datatoprocess[i]['type'],
+                                       title=datatoprocess[i]['title'],
+                                       viewer_count=datatoprocess[i]['viewer_count'],
+                                       started_at=datatoprocess[i]['started_at'],
+                                       language=datatoprocess[i]['language'],
+                                       thumbnail_url=datatoprocess[i]['thumbnail_url'],
+                                       tag_ids=datatoprocess[i]['tag_ids'])
+            streams_for_bulk.append(live_stream)
+            live_streams.objects.bulk_create(streams_for_bulk, 1000)
+            streams_for_bulk = []
+        number_of_streams += len(datatoprocess)
+        datatoprocess.clear()
+    else:
+        break
+    # make a logger here
+live_streams.objects.bulk_create(streams_for_bulk)
+data_uploading_time = time.time() - data_uploading_start_time
+
+performance = live_streams_performance(date=event_time,
+                                       number_of_streams=number_of_streams,
+                                       data_requesting_time=0,
+                                       data_uploading_time=0,
+                                       final_time=data_uploading_time,
+                                       request_count=request_count)
+performance.save()
 
 # game list
 event_time_games = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
