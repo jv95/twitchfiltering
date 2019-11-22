@@ -57,7 +57,6 @@ while paginator != '':
     else:
         break
     # make a logger here
-live_streams.objects.bulk_create(streams_for_bulk)
 
 data_uploading_time = time.time() - data_uploading_start_time
 
@@ -72,8 +71,6 @@ performance.save()
 # game list
 event_time_games = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 print(event_time_games)
-event_timetest = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-print(event_timetest)
 requesting_start_time_games = time.time()
 
 ENDPOINT_games = " https://api.twitch.tv/helix/games/top?first=100"
@@ -90,7 +87,7 @@ number_of_games = 0
 while paginator_games != '':
     games2_games = requests.get(endpoint2_games + paginator_games, headers=HEADER).json()
     request_count_games += 1
-    if 'data' in games2:
+    if 'data' in games2_games:
         gamelist += games2_games['data']
         paginator_games = games2_games['pagination']['cursor'] if 'cursor' in games2_games['pagination'] else ''
         for i in range(0, len(gamelist)):
@@ -105,7 +102,6 @@ while paginator_games != '':
     else:
         break
 
-game_identity.objects.bulk_create(games_for_bulk)
 data_uploading_time_games = time.time() - data_uploading_start_time_games
 
 performance_games = game_identity_performance(date=event_time_games,
