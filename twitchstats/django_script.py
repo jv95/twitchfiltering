@@ -33,10 +33,10 @@ data_uploading_start_time = time.time()
 streams_for_bulk = []
 while paginator != '':
     games2 = requests.get(endpoint2 + paginator, headers=HEADER).json()
+    request_count += 1
     if 'data' in games2:
         datatoprocess += games2['data']
         paginator = games2['pagination']['cursor'] if 'cursor' in games2['pagination'] else ''
-        request_count += 1
         for i in range(0, len(datatoprocess)):
             live_stream = live_streams(stream_id=datatoprocess[i]['id'],
                                        user_id=datatoprocess[i]['user_id'],
@@ -51,8 +51,7 @@ while paginator != '':
                                        tag_ids=datatoprocess[i]['tag_ids'])
             streams_for_bulk.append(live_stream)
             live_streams.objects.bulk_create(streams_for_bulk, 1000)
-            streams_for_bulk.clear()
-
+            streams_for_bulk = []
         number_of_streams += len(datatoprocess)
         datatoprocess.clear()
     else:
@@ -83,28 +82,34 @@ request_count_games = 1
 games_games = requests.get(ENDPOINT_games, headers=HEADER).json()
 paginator_games = games_games['pagination']['cursor']
 gamelist = games_games['data']
-
+games_for_bulk = []
 game_identity.objects.all().delete()
 data_uploading_start_time_games = time.time()
+number_of_games = 0
 
 while paginator_games != '':
     games2_games = requests.get(endpoint2_games + paginator_games, headers=HEADER).json()
+    request_count_games += 1
     if 'data' in games2:
         gamelist += games2_games['data']
         paginator_games = games2_games['pagination']['cursor'] if 'cursor' in games2_games['pagination'] else ''
-        request_count_games += 1
         for i in range(0, len(gamelist)):
-            game_identity.objects.bulk_create(game_identity(game_id=gamelist[i]['id'],
-                                                            game_name=gamelist[i]['name'],
-                                                            box_art_url=gamelist[i]['box_art_url']))
+            games_identity = game_identity(game_id=gamelist[i]['id'],
+                                           game_name=gamelist[i]['name'],
+                                           box_art_url=gamelist[i]['box_art_url'])
+            games_for_bulk.append(games_identity)
+            game_identity.objects.bulk_create(games_for_bulk, 100)
+            games_for_bulk = []
+        number_of_games += len(gamelist)
         gamelist.clear()
     else:
         break
 
+game_identity.objects.bulk_create(games_for_bulk)
 data_uploading_time_games = time.time() - data_uploading_start_time_games
 
 performance_games = game_identity_performance(date=event_time_games,
-                                              number_of_games=len(gamelist),
+                                              number_of_games=number_of_games,
                                               data_requesting_time=0,
                                               data_uploading_time=0,
                                               final_time=data_uploading_time_games,
