@@ -38,6 +38,7 @@ class GamesManager:
         game_identity.objects.all().delete()
         data_uploading_start_time_games = time.time()
         number_of_games = 0
+        number_of_games += len(gamelist)
 
         while paginator_games != '':
             games2_games = requests.get(endpoint2_games + paginator_games, headers=self.HEADER).json()

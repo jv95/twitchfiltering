@@ -34,10 +34,12 @@ class StreamsManager:
         paginator = games['pagination']['cursor']
         datatoprocess = games['data']
         number_of_streams = 0
+        number_of_streams += len(datatoprocess)
         live_streams.objects.all().delete()
         data_uploading_start_time = time.time()
         streams_for_bulk = []
         while paginator != '':
+            print(paginator)
             games2 = requests.get(endpoint2 + paginator, headers=self.HEADER).json()
             request_count += 1
             if request_count >= 700:
