@@ -43,7 +43,7 @@ class StreamsManager:
             if request_count >= 500:
                 break
             if 'data' in games2:
-                datatoprocess = games2['data']
+                datatoprocess += games2['data']
                 paginator = games2['pagination']['cursor'] if 'cursor' in games2['pagination'] else ''
                 for i in range(0, len(datatoprocess)):
                     live_stream = live_streams(stream_id=datatoprocess[i]['id'],

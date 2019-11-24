@@ -43,7 +43,7 @@ class GamesManager:
             games2_games = requests.get(endpoint2_games + paginator_games, headers=self.HEADER).json()
             request_count_games += 1
             if 'data' in games2_games:
-                gamelist = games2_games['data']
+                gamelist += games2_games['data']
                 paginator_games = games2_games['pagination']['cursor'] if 'cursor' in games2_games['pagination'] else ''
                 for i in range(0, len(gamelist)):
                     games_identity = game_identity(game_id=gamelist[i]['id'],
