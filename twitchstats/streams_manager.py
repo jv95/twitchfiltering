@@ -45,7 +45,6 @@ class StreamsManager:
             if 'data' in games2:
                 datatoprocess += games2['data']
                 paginator = games2['pagination']['cursor'] if 'cursor' in games2['pagination'] else ''
-                games2.clear()
                 for i in range(0, len(datatoprocess)):
                     live_stream = live_streams(stream_id=datatoprocess[i]['id'],
                                                user_id=datatoprocess[i]['user_id'],
@@ -60,7 +59,8 @@ class StreamsManager:
                                                tag_ids=datatoprocess[i]['tag_ids'])
                     streams_for_bulk.append(live_stream)
                 live_streams.objects.bulk_create(streams_for_bulk, ignore_conflicts=True)
-                streams_for_bulk = []
+                streams_for_bulk.clear()
+                games2.clear()
                 number_of_streams += len(datatoprocess)
                 datatoprocess.clear()
             else:
