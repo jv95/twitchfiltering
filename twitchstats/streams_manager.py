@@ -40,7 +40,7 @@ class StreamsManager:
         while paginator != '':
             games2 = requests.get(endpoint2 + paginator, headers=self.HEADER).json()
             request_count += 1
-            if request_count >= 500:
+            if request_count >= 700:
                 break
             if 'data' in games2:
                 datatoprocess += games2['data']
