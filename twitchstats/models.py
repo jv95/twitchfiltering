@@ -2,7 +2,7 @@ from django.db import models
 
 
 class live_streams(models.Model):
-    stream_id = models.TextField(default=None, blank=True, null=True, max_length=1024)
+    stream_id = models.TextField(default=None, max_length=1024, primary_key=True)
     user_id = models.TextField(default=None, blank=True, null=True)
     user_name = models.TextField(default=None, blank=True, null=True)
     game_id = models.TextField(default=None, blank=True, null=True)
