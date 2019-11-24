@@ -1,8 +1,8 @@
 #!/usr/bin/python3
 # coding=utf8
 
-from twitchstats.streams_manager import StreamsManager
-from twitchstats.games_manager import GamesManager
+from streams_manager import StreamsManager
+from games_manager import GamesManager
 
 get_all_streams = StreamsManager()
 get_all_games = GamesManager()
