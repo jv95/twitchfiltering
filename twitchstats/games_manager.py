@@ -45,6 +45,7 @@ class GamesManager:
             if 'data' in games2_games:
                 gamelist += games2_games['data']
                 paginator_games = games2_games['pagination']['cursor'] if 'cursor' in games2_games['pagination'] else ''
+                games2_games.clear()
                 for i in range(0, len(gamelist)):
                     games_identity = game_identity(game_id=gamelist[i]['id'],
                                                game_name=gamelist[i]['name'],
@@ -65,3 +66,7 @@ class GamesManager:
                                                   final_time=data_uploading_time_games,
                                                   request_count=request_count_games)
         performance_games.save()
+
+if __name__ == '__main__':
+    get_all_games = GamesManager()
+    get_all_games.get_games()

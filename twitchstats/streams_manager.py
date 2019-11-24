@@ -45,6 +45,7 @@ class StreamsManager:
             if 'data' in games2:
                 datatoprocess += games2['data']
                 paginator = games2['pagination']['cursor'] if 'cursor' in games2['pagination'] else ''
+                games2.clear()
                 for i in range(0, len(datatoprocess)):
                     live_stream = live_streams(stream_id=datatoprocess[i]['id'],
                                                user_id=datatoprocess[i]['user_id'],
@@ -75,3 +76,7 @@ class StreamsManager:
                                                final_time=data_uploading_time,
                                                request_count=request_count)
         performance.save()
+
+if __name__ == '__main__':
+    get_all_streams = StreamsManager()
+    get_all_streams.get_streams()
