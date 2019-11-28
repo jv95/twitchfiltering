@@ -42,7 +42,6 @@ class StreamsManager:
         data_uploading_start_time = time.time()
         streams_for_bulk = []
         while paginator != '':
-            print(paginator)
             games2 = requests.get(endpoint2 + paginator, headers=self.HEADER).json()
             request_count += 1
             if request_count >= cfg['twitch']['max_request_count']:
