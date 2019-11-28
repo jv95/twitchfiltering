@@ -62,8 +62,6 @@ class GamesManager:
         data_uploading_time_games = time.time() - data_uploading_start_time_games
         performance_games = game_identity_performance(date=event_time,
                                                   number_of_games=number_of_games,
-                                                  data_requesting_time=0,
-                                                  data_uploading_time=0,
                                                   final_time=data_uploading_time_games,
                                                   request_count=request_count_games)
         performance_games.save()

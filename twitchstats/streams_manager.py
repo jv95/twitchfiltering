@@ -76,8 +76,6 @@ class StreamsManager:
 
         performance = live_streams_performance(date=event_time,
                                                number_of_streams=number_of_streams,
-                                               data_requesting_time=0,
-                                               data_uploading_time=0,
                                                final_time=data_uploading_time,
                                                request_count=request_count)
         performance.save()

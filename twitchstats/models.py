@@ -18,8 +18,6 @@ class live_streams(models.Model):
 class live_streams_performance(models.Model):
     date = models.TextField(default=None, blank=True, null=True)
     number_of_streams = models.TextField(default=None, blank=True, null=True)
-    data_requesting_time = models.TextField(default=None, blank=True, null=True)
-    data_uploading_time = models.TextField(default=None, blank=True, null=True)
     final_time = models.TextField(default=None, blank=True, null=True)
     request_count = models.TextField(default=None, blank=True, null=True)
 
@@ -33,7 +31,5 @@ class game_identity(models.Model):
 class game_identity_performance(models.Model):
     date = models.TextField(default=None, blank=True, null=True)
     number_of_games = models.TextField(default=None, blank=True, null=True)
-    data_requesting_time = models.TextField(default=None, blank=True, null=True)
-    data_uploading_time = models.TextField(default=None, blank=True, null=True)
     final_time = models.TextField(default=None, blank=True, null=True)
     request_count = models.TextField(default=None, blank=True, null=True)
