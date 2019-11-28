@@ -1,19 +1,23 @@
 #!/usr/bin/python3
 # coding=utf8
 
-# code needs improvements!, get system specific values from sys variables, create new db everytime,
+# code needs improvements!, get system specific values from yaml, create new db everytime,
 # then delete the old one and replace it with the new one
 
 import os
 import sys
 import time
 from datetime import datetime
+import yaml
 
 import django
 import requests
 
+with open('settings.yaml', 'r') as yamlfile:
+    cfg = yaml.load(yamlfile)
+
 event_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-sys.path.append("/home/bjork/www/bjorktest.com/web")
+sys.path.append(cfg['environment']['sys_path_append'])
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "web.settings")
 django.setup()
 from twitchstats.models import game_identity, game_identity_performance
@@ -21,7 +25,7 @@ from twitchstats.models import game_identity, game_identity_performance
 
 class GamesManager:
     def __init__(self):
-        self.HEADER = {"Client-ID": "8p8mneffjoj1ilw5jxfkblh5hzsh5e"}
+        self.HEADER = {"Client-ID": cfg['twitch']['client_id']}
 
     def get_games(self):
 

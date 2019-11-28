@@ -8,12 +8,15 @@ import os
 import sys
 import time
 from datetime import datetime
-
+import yaml
 import django
 import requests
 
+with open('settings.yaml', 'r') as yamlfile:
+    cfg = yaml.load(yamlfile)
+
 event_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-sys.path.append("/home/bjork/www/bjorktest.com/web")
+sys.path.append(cfg['environment']['sys_path_append'])
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "web.settings")
 django.setup()
 from twitchstats.models import live_streams, live_streams_performance
@@ -22,7 +25,7 @@ from twitchstats.models import live_streams, live_streams_performance
 class StreamsManager:
 
     def __init__(self):
-        self.HEADER = {"Client-ID": "8p8mneffjoj1ilw5jxfkblh5hzsh5e"}
+        self.HEADER = {"Client-ID": cfg['twitch']['client_id']}
 
     def get_streams(self):
 
@@ -42,7 +45,7 @@ class StreamsManager:
             print(paginator)
             games2 = requests.get(endpoint2 + paginator, headers=self.HEADER).json()
             request_count += 1
-            if request_count >= 700:
+            if request_count >= cfg['twitch']['max_request_count']:
                 break
             if 'data' in games2:
                 datatoprocess += games2['data']

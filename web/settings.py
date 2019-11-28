@@ -11,21 +11,21 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
-
+import yaml
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
-
+with open('../twitchstats/settings.yaml', 'r') as yamlfile:
+    cfg = yaml.load(yamlfile)
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '&rh0lq*u3ab#m!=(@y=l_+3(qcka59v9z-(dlgk4am^*-fgi-b'
+SECRET_KEY = cfg['django']['secret_key']
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = cfg['django']['debug']
 
-ALLOWED_HOSTS = ['www.bjorktest.com', 'bjorktest.com', '127.0.0.1']
+ALLOWED_HOSTS = cfg['django']['allowed_hosts']
 
 
 # Application definition
@@ -77,11 +77,11 @@ WSGI_APPLICATION = 'web.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'bjork',
-        'USER': 'bjork',
-        'PASSWORD': 'bjork2703',
-        'HOST': '127.0.0.1',
-        'PORT': '',
+        'NAME': cfg['database']['name'],
+        'USER': cfg['database']['user'],
+        'PASSWORD': cfg['database']['password'],
+        'HOST': cfg['database']['host'],
+        'PORT': cfg['database']['port'],
     }
 }
 
