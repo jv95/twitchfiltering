@@ -28,10 +28,6 @@ class GamesManager:
         self.HEADER = {"Client-ID": cfg['twitch']['client_id']}
 
     def get_games(self):
-
-        event_time_games = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        requesting_start_time_games = time.time()
-
         ENDPOINT_games = " https://api.twitch.tv/helix/games/top?first=100"
         endpoint2_games = " https://api.twitch.tv/helix/games/top?first=100&after="
         request_count_games = 1
@@ -64,7 +60,7 @@ class GamesManager:
                 break
         game_identity.objects.bulk_create(games_for_bulk)
         data_uploading_time_games = time.time() - data_uploading_start_time_games
-        performance_games = game_identity_performance(date=event_time_games,
+        performance_games = game_identity_performance(date=event_time,
                                                   number_of_games=number_of_games,
                                                   data_requesting_time=0,
                                                   data_uploading_time=0,
