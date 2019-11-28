@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 # coding=utf8
 
-# code needs improvements!, get system specific values from sys variables, create new db everytime,
+# code needs improvements!, create new db everytime,
 # then delete the old one and replace it with the new one
 
 import os
