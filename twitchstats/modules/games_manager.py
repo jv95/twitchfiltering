@@ -11,8 +11,6 @@ import requests
 import yaml
 
 with open('settings.yaml', 'r') as yamlfile: cfg = yaml.load(yamlfile)
-
-event_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 sys.path.append(cfg['environment']['sys_path_append'])
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "web.settings")
 django.setup()
@@ -24,6 +22,7 @@ class GamesManager:
         self.HEADER = {"Client-ID": cfg['twitch']['client_id']}
 
     def get_games(self):
+        event_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         ENDPOINT = " https://api.twitch.tv/helix/games/top?first=100"
         endpoint2 = " https://api.twitch.tv/helix/games/top?first=100&after="
         request_count = 1
