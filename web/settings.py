@@ -15,8 +15,7 @@ import yaml
 import twitchstats
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-with open('twitchstats/settings.yaml', 'r') as yamlfile:
-    cfg = yaml.load(yamlfile)
+with open('twitchstats/settings.yaml', 'r') as yamlfile: cfg = yaml.load(yamlfile)
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
