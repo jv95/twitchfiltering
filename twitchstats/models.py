@@ -23,7 +23,7 @@ class live_streams_performance(models.Model):
 
 
 class game_identity(models.Model):
-    game_id = models.TextField(default=None, blank=True, null=True)
+    game_id = models.TextField(default=None, max_length=1024, primary_key=True)
     game_name = models.TextField(default=None, blank=True, null=True)
     box_art_url = models.TextField(default=None, blank=True, null=True)
 

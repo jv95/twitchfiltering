@@ -1,20 +1,16 @@
 #!/usr/bin/python3
 # coding=utf8
 
-# code needs improvements!, create new db everytime,
-# then delete the old one and replace it with the new one
-
 import os
 import sys
 import time
 from datetime import datetime
-import yaml
 
 import django
 import requests
+import yaml
 
-with open('settings.yaml', 'r') as yamlfile:
-    cfg = yaml.load(yamlfile)
+with open('settings.yaml', 'r') as yamlfile: cfg = yaml.load(yamlfile)
 
 event_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 sys.path.append(cfg['environment']['sys_path_append'])
@@ -28,43 +24,44 @@ class GamesManager:
         self.HEADER = {"Client-ID": cfg['twitch']['client_id']}
 
     def get_games(self):
-        ENDPOINT_games = " https://api.twitch.tv/helix/games/top?first=100"
-        endpoint2_games = " https://api.twitch.tv/helix/games/top?first=100&after="
-        request_count_games = 1
-        games_games = requests.get(ENDPOINT_games, headers=self.HEADER).json()
-        paginator_games = games_games['pagination']['cursor']
-        gamelist = games_games['data']
-        games_for_bulk = []
-        game_identity.objects.all().delete()
-        data_uploading_start_time_games = time.time()
+        ENDPOINT = " https://api.twitch.tv/helix/games/top?first=100"
+        endpoint2 = " https://api.twitch.tv/helix/games/top?first=100&after="
+        request_count = 1
         number_of_games = 0
-        number_of_games += len(gamelist)
+        games_for_bulk = []
 
-        while paginator_games != '':
-            games2_games = requests.get(endpoint2_games + paginator_games, headers=self.HEADER).json()
-            request_count_games += 1
-            if 'data' in games2_games:
-                gamelist += games2_games['data']
-                paginator_games = games2_games['pagination']['cursor'] if 'cursor' in games2_games['pagination'] else ''
-                games2_games.clear()
-                for i in range(0, len(gamelist)):
-                    games_identity = game_identity(game_id=gamelist[i]['id'],
-                                               game_name=gamelist[i]['name'],
-                                               box_art_url=gamelist[i]['box_art_url'])
+        data_uploading_start_time = time.time()
+        games = requests.get(ENDPOINT, headers=self.HEADER).json()
+        paginator = games['pagination']['cursor']
+        game_list = games['data']
+        number_of_games += len(game_list)
+        game_identity.objects.all().delete()
+
+        while paginator != '':
+            games2 = requests.get(endpoint2 + paginator, headers=self.HEADER).json()
+            request_count += 1
+            if 'data' in games2:
+                game_list += games2['data']
+                paginator = games2['pagination']['cursor'] if 'cursor' in games2['pagination'] else ''
+                for i in range(0, len(game_list)):
+                    games_identity = game_identity(game_id=game_list[i]['id'],
+                                                   game_name=game_list[i]['name'],
+                                                   box_art_url=game_list[i]['box_art_url'])
                     games_for_bulk.append(games_identity)
-                game_identity.objects.bulk_create(games_for_bulk)
-                games_for_bulk = []
-                number_of_games += len(gamelist)
-                gamelist.clear()
+                game_identity.objects.bulk_create(games_for_bulk, ignore_conflicts=True)
+                number_of_games += len(game_list)
+                games_for_bulk.clear()
+                games2.clear()
+                game_list.clear()
             else:
                 break
-        game_identity.objects.bulk_create(games_for_bulk)
-        data_uploading_time_games = time.time() - data_uploading_start_time_games
+
         performance_games = game_identity_performance(date=event_time,
-                                                  number_of_games=number_of_games,
-                                                  final_time=data_uploading_time_games,
-                                                  request_count=request_count_games)
+                                                      number_of_games=number_of_games,
+                                                      final_time=time.time() - data_uploading_start_time,
+                                                      request_count=request_count)
         performance_games.save()
+
 
 if __name__ == '__main__':
     get_all_games = GamesManager()
