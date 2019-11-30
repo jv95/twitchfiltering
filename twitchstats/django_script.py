@@ -3,11 +3,11 @@
 
 # create new db everytime - delete the old one and replace it with the new one?
 
-from games_manager import GamesManager
-from streams_manager import StreamsManager
+from . import games_manager
+from . import streams_manager
 
-get_all_streams = StreamsManager()
-get_all_games = GamesManager()
+get_all_streams = streams_manager.StreamsManager()
+get_all_games = games_manager.GamesManager()
 
 get_all_streams.get_streams()
 get_all_games.get_games()
