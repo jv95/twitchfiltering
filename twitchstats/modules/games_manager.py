@@ -14,7 +14,7 @@ with open('settings.yaml', 'r') as yamlfile: cfg = yaml.load(yamlfile)
 sys.path.append(cfg['environment']['sys_path_append'])
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "web.settings")
 django.setup()
-from twitchstats.models import game_identity, game_identity_performance
+from twitchstats.models import game_identity, game_identity_performance, game_identity2, active_table_games
 
 
 class GamesManager:
@@ -28,13 +28,15 @@ class GamesManager:
         request_count = 1
         number_of_games = 0
         games_for_bulk = []
+        current_active_table = active_table_games.objects.last()
+        current_inactive_table = game_identity2 if current_active_table == 'game_identity' else game_identity
 
         data_uploading_start_time = time.time()
         games = requests.get(ENDPOINT, headers=self.HEADER).json()
         paginator = games['pagination']['cursor']
         game_list = games['data']
         number_of_games += len(game_list)
-        game_identity.objects.all().delete()
+        current_inactive_table.objects.all().delete()
 
         while paginator != '':
             games2 = requests.get(endpoint2 + paginator, headers=self.HEADER).json()
@@ -43,11 +45,11 @@ class GamesManager:
                 game_list += games2['data']
                 paginator = games2['pagination']['cursor'] if 'cursor' in games2['pagination'] else ''
                 for i in range(0, len(game_list)):
-                    games_identity = game_identity(game_id=game_list[i]['id'],
+                    games_identity = current_inactive_table(game_id=game_list[i]['id'],
                                                    game_name=game_list[i]['name'],
                                                    box_art_url=game_list[i]['box_art_url'])
                     games_for_bulk.append(games_identity)
-                game_identity.objects.bulk_create(games_for_bulk, ignore_conflicts=True)
+                current_inactive_table.objects.bulk_create(games_for_bulk, ignore_conflicts=True)
                 number_of_games += len(game_list)
                 games_for_bulk.clear()
                 games2.clear()
@@ -55,6 +57,8 @@ class GamesManager:
             else:
                 break
 
+        new_active_table = active_table_games(active_table=str(current_inactive_table))
+        new_active_table.save()
         performance_games = game_identity_performance(date=event_time,
                                                       number_of_games=number_of_games,
                                                       final_time=time.time() - data_uploading_start_time,
