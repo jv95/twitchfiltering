@@ -3,8 +3,8 @@
 
 # create new db everytime - delete the old one and replace it with the new one?
 
-from twitchstats import streams_manager
-from twitchstats import games_manager
+from modules import games_manager
+from modules import streams_manager
 get_all_streams = streams_manager.StreamsManager()
 get_all_games = games_manager.GamesManager()
 
