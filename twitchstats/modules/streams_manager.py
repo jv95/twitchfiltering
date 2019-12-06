@@ -67,6 +67,7 @@ class StreamsManager:
             else:
                 break
 
+        active_table_streams.objects.all().delete()
         new_active_table = active_table_streams(active_table=str(current_inactive_table))
         new_active_table.save()
 

@@ -57,6 +57,7 @@ class GamesManager:
             else:
                 break
 
+        active_table_games.objects.all().delete()
         new_active_table = active_table_games(active_table=str(current_inactive_table))
         new_active_table.save()
         performance_games = game_identity_performance(date=event_time,
