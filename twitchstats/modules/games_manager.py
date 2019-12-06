@@ -29,7 +29,7 @@ class GamesManager:
         number_of_games = 0
         games_for_bulk = []
         current_active_table = active_table_games.objects.values().order_by('-id').first()
-        current_inactive_table = game_identity2 if current_active_table == '<class \'twitchstats.models.game_identity\'>' else game_identity
+        current_inactive_table = game_identity2 if current_active_table['active_table'] == '<class \'twitchstats.models.game_identity\'>' else game_identity
 
         data_uploading_start_time = time.time()
         games = requests.get(ENDPOINT, headers=self.HEADER).json()
