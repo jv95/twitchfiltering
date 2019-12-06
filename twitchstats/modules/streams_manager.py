@@ -29,7 +29,7 @@ class StreamsManager:
         request_count = 1
         number_of_streams = 0
         streams_for_bulk = []
-        current_active_table = active_table_streams.objects.last()
+        current_active_table = active_table_streams.objects.latest('id')
         current_inactive_table = live_streams2 if current_active_table == '<class \'twitchstats.models.live_streams\'>' else live_streams
 
         data_uploading_start_time = time.time()
