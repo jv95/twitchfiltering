@@ -41,6 +41,7 @@ class GamesManager:
         while paginator != '':
             games2 = requests.get(endpoint2 + paginator, headers=self.HEADER).json()
             request_count += 1
+            if request_count >= cfg['twitch']['max_games_request_count']: break
             if 'data' in games2:
                 game_list += games2['data']
                 paginator = games2['pagination']['cursor'] if 'cursor' in games2['pagination'] else ''

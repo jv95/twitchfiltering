@@ -42,7 +42,7 @@ class StreamsManager:
         while paginator != '':
             streams2 = requests.get(endpoint2 + paginator, headers=self.HEADER).json()
             request_count += 1
-            if request_count >= cfg['twitch']['max_request_count']: break
+            if request_count >= cfg['twitch']['max_streams_request_count']: break
             if 'data' in streams2:
                 stream_list += streams2['data']
                 paginator = streams2['pagination']['cursor'] if 'cursor' in streams2['pagination'] else ''
