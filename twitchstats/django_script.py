@@ -7,7 +7,7 @@ import logging
 from modules import games_manager
 from modules import streams_manager
 
-logging.basicConfig(filename='twitch_stats.log', format='%(asctime)s')
+logging.basicConfig(filename='django_script.log', format='%(asctime)s')
 try:
     get_all_streams = streams_manager.StreamsManager()
     get_all_games = games_manager.GamesManager()
