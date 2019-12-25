@@ -15,8 +15,8 @@ from twitchstats.models import game_identity, active_table_games, game_identity2
 active_table_streams = active_table_games.objects.values()
 game_list = game_identity2.objects.values() if 'game_identity2' in active_table_streams else game_identity.objects.values()
 game_list_filtered = [d['game_name'] for d in game_list]
-lenght = list(range(0, len(game_list_filtered)))
-game_choices = zip(lenght, game_list_filtered)
+id_list_filtered = [d['game_id'] for d in game_list]
+game_choices = zip(id_list_filtered, game_list_filtered)
 
 
 class GetStreamsForm(forms.Form):
