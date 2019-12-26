@@ -35,7 +35,7 @@
 {% if response %}
     <div class="card-group">
         {% for e in response %}
-                    <div class="col-lg-2 d-flex align-items-stretch">
+                    <div class="col-lg-2 d-flex align-items-stretch mt-3">
                         <div class="card" style="width: 318px;">
                             <img src="{{ e.thumbnail_url }}" class="card-img-top" alt="...">
                             <div class="card-body">
@@ -52,9 +52,7 @@
     </div>
 {% endif %}
 </br>
-{% if maxv %}
-    max viewers {{ maxv }}
-{% endif %}
+
 
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->

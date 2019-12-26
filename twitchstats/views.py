@@ -19,10 +19,15 @@ def index(request):
     if request.GET.get('game'):
         game = request.GET.get('game')
         maxv = request.GET.get('max_viewers')
+        language = request.GET.get('language')
         form_updated = GetStreamsForm(initial={'game': game, 'max_viewers': maxv})
 
         active_table_str = active_table_streams.objects.values()
-        if maxv:
+        if maxv and language:
+            stream_list = live_streams2.objects.values().filter(game_id=game,
+                                                                viewer_count__lte=maxv, language = language) if 'live_streams2' in active_table_str else live_streams.objects.values().filter(
+                game_id=game, viewer_count__lte=maxv, language= language)
+        elif maxv:
             stream_list = live_streams2.objects.values().filter(game_id=game,
                                                                 viewer_count__lte=maxv) if 'live_streams2' in active_table_str else live_streams.objects.values().filter(
                 game_id=game, viewer_count__lte=maxv)
@@ -33,6 +38,6 @@ def index(request):
         for d in stream_list:
             if d['thumbnail_url']:
                 value = str(d['thumbnail_url'])
-                d['thumbnail_url'] = value.replace('{width}x{height}', '318x318')
-        return render(request, 'templates/base.html', {'form': form_updated, 'response': stream_list, 'maxv': maxv})
+                d['thumbnail_url'] = value.replace('{width}x{height}', '315x178')
+        return render(request, 'templates/base.html', {'form': form_updated, 'response': stream_list})
     return render(request, 'templates/base.html', {'form': form})

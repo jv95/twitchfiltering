@@ -13,7 +13,7 @@ django.setup()
 from twitchstats.models import game_identity, active_table_games, game_identity2
 
 active_table_streams = active_table_games.objects.values()
-game_list = game_identity2.objects.values() if 'game_identity2' in active_table_streams else game_identity.objects.values()
+game_list = game_identity2.objects.values().order_by('game_name') if 'game_identity2' in active_table_streams else game_identity.objects.values().order_by('game_name')
 game_list_filtered = [d['game_name'] for d in game_list]
 id_list_filtered = [d['game_id'] for d in game_list]
 game_choices = zip(id_list_filtered, game_list_filtered)
@@ -24,3 +24,5 @@ class GetStreamsForm(forms.Form):
                              widget=forms.Select(attrs={'class': 'form-control'}))
     max_viewers = forms.IntegerField(min_value=0, required=False,
                                      widget=forms.NumberInput(attrs={'class': 'form-control'}))
+    language = forms.CharField(required=False,
+        widget=forms.TextInput(attrs={'class': 'form-control'}))
