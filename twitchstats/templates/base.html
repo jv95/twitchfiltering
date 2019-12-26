@@ -33,12 +33,10 @@
     </div>
 </form>
 {% if response %}
-    <div class="card-deck">
+    <div class="card-group">
         {% for e in response %}
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-4 d-flex align-items-stretch">
-                        <div class="card" style="width: 18rem;">
+                    <div class="col-lg-2 d-flex align-items-stretch">
+                        <div class="card" style="width: 318px;">
                             <img src="{{ e.thumbnail_url }}" class="card-img-top" alt="...">
                             <div class="card-body">
                             <a href="https://www.twitch.tv/{{ e.user_name }}" target="_blank">
@@ -49,8 +47,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
+
         {% endfor %}
     </div>
 {% endif %}
