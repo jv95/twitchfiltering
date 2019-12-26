@@ -22,7 +22,5 @@ game_choices = zip(id_list_filtered, game_list_filtered)
 class GetStreamsForm(forms.Form):
     game = forms.ChoiceField(choices=game_choices, required=True,
                              widget=forms.Select(attrs={'class': 'form-control'}))
-    max_followers = forms.IntegerField(min_value=0, required=False,
-                                       widget=forms.NumberInput(attrs={'class': 'form-control'}))
     max_viewers = forms.IntegerField(min_value=0, required=False,
                                      widget=forms.NumberInput(attrs={'class': 'form-control'}))

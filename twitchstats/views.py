@@ -11,14 +11,28 @@ sys.path.append(cfg['environment']['sys_path_append'])
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "web.settings")
 django.setup()
 from twitchstats.forms import GetStreamsForm
+from twitchstats.models import active_table_streams, live_streams, live_streams2
 
 
 def index(request):
     form = GetStreamsForm()
     if request.GET.get('game'):
-        response = request.GET.get('game')
-        maxf = request.GET.get('max_followers')
+        game = request.GET.get('game')
         maxv = request.GET.get('max_viewers')
-        form_updated = GetStreamsForm(initial={'game': response, 'max_followers': maxf, 'max_viewers': maxv})
-        return render(request, 'templates/base.html', {'form': form_updated, 'response': response, 'maxf': maxf, 'maxv': maxv})
+        form_updated = GetStreamsForm(initial={'game': game, 'max_viewers': maxv})
+
+        active_table_str = active_table_streams.objects.values()
+        if maxv:
+            stream_list = live_streams2.objects.values().filter(game_id=game,
+                                                                viewer_count__lte=maxv) if 'live_streams2' in active_table_str else live_streams.objects.values().filter(
+                game_id=game, viewer_count__lte=maxv)
+        else:
+            stream_list = live_streams2.objects.values().filter(
+                game_id=game) if 'live_streams2' in active_table_str else live_streams.objects.values().filter(
+                game_id=game)
+        for d in stream_list:
+            if d['thumbnail_url']:
+                value = str(d['thumbnail_url'])
+                d['thumbnail_url'] = value.replace('{width}x{height}', '318x318')
+        return render(request, 'templates/base.html', {'form': form_updated, 'response': stream_list, 'maxv': maxv})
     return render(request, 'templates/base.html', {'form': form})

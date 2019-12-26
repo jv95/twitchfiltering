@@ -27,19 +27,38 @@
             <p>
                 <button class="btn btn-primary" type="submit">Get streams</button>
             </p>
-            {% if response %}
-                <h1>game id {{ response }}</h1>
-            {% endif %}
-            {% if maxf %}
-                 <h1>max followers {{ maxf }}</h1>
-            {% endif %}
-            {% if maxv %}
-                 <h1>max viewers {{ maxv }}</h1>
-            {% endif %}
+
 
         </div>
     </div>
 </form>
+{% if response %}
+    <div class="card-deck">
+        {% for e in response %}
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-4 d-flex align-items-stretch">
+                        <div class="card" style="width: 18rem;">
+                            <img src="{{ e.thumbnail_url }}" class="card-img-top" alt="...">
+                            <div class="card-body">
+                            <a href="https://www.twitch.tv/{{ e.user_name }}" target="_blank">
+                            <h5 class="card-title">{{ e.title }}</h5></a>
+                            <p class="card-text">user name: {{ e.user_name }}</p>
+                            <p class="card-text">viewer_count: {{ e.viewer_count }}</p>
+                            <p class="card-text">language: {{ e.language }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endif %}
+</br>
+{% if maxv %}
+    max viewers {{ maxv }}
+{% endif %}
+
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
 <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
