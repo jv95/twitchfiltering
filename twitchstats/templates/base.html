@@ -19,17 +19,27 @@
 </div>
 </br>
 </br>
-
 <!-- Generate the search form. -->
 <form>
     <div class="form-group">
         <div class="col-sm-5">
             {{ form.as_p }}
-            <p><button class="btn btn-primary" type="submit">Get streams</button></p>
+            <p>
+                <button class="btn btn-primary" type="submit">Get streams</button>
+            </p>
+            {% if response %}
+                <h1>game id {{ response }}</h1>
+            {% endif %}
+            {% if maxf %}
+                 <h1>max followers {{ maxf }}</h1>
+            {% endif %}
+            {% if maxv %}
+                 <h1>max viewers {{ maxv }}</h1>
+            {% endif %}
+
         </div>
     </div>
 </form>
-
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
 <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"

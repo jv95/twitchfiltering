@@ -12,9 +12,13 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "web.settings")
 django.setup()
 from twitchstats.forms import GetStreamsForm
 
+
 def index(request):
     form = GetStreamsForm()
-    if form.is_valid():
-        form.clean()
-
+    if request.GET.get('game'):
+        response = request.GET.get('game')
+        maxf = request.GET.get('max_followers')
+        maxv = request.GET.get('max_viewers')
+        form_updated = GetStreamsForm(initial={'game': response, 'max_followers': maxf, 'max_viewers': maxv})
+        return render(request, 'templates/base.html', {'form': form_updated, 'response': response, 'maxf': maxf, 'maxv': maxv})
     return render(request, 'templates/base.html', {'form': form})
