@@ -22,8 +22,8 @@ game_choices = zip(id_list_filtered, game_list_filtered)
 
 active_tb_streams = active_table_streams.objects.values()
 streams_list = live_streams2.objects.values(
-    'language').distinct() if 'live_streams2' in active_tb_streams else live_streams.objects.values(
-    'language').distinct()
+    'language').order_by('language').distinct() if 'live_streams2' in active_tb_streams else live_streams.objects.values(
+    'language').order_by('language').distinct()
 language_list = [d['language'] for d in streams_list]
 language_to_choice = zip(language_list, language_list)
 
