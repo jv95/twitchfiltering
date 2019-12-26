@@ -10,13 +10,22 @@ with open(BASE_DIR + '/twitchstats/settings.yaml', 'r') as yamlfile: cfg = yaml.
 sys.path.append(cfg['environment']['sys_path_append'])
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "web.settings")
 django.setup()
-from twitchstats.models import game_identity, active_table_games, game_identity2
+from twitchstats.models import game_identity, active_table_games, game_identity2, active_table_streams, live_streams, \
+    live_streams2
 
-active_table_streams = active_table_games.objects.values()
-game_list = game_identity2.objects.values().order_by('game_name') if 'game_identity2' in active_table_streams else game_identity.objects.values().order_by('game_name')
+active_tb_games = active_table_games.objects.values()
+game_list = game_identity2.objects.values().order_by(
+    'game_name') if 'game_identity2' in active_tb_games else game_identity.objects.values().order_by('game_name')
 game_list_filtered = [d['game_name'] for d in game_list]
 id_list_filtered = [d['game_id'] for d in game_list]
 game_choices = zip(id_list_filtered, game_list_filtered)
+
+active_tb_streams = active_table_streams.objects.values()
+streams_list = live_streams2.objects.values(
+    'language').distinct() if 'live_streams2' in active_tb_streams else live_streams.objects.values(
+    'language').distinct()
+language_list = [d['language'] for d in streams_list]
+language_to_choice = zip(language_list, language_list)
 
 
 class GetStreamsForm(forms.Form):
@@ -24,5 +33,5 @@ class GetStreamsForm(forms.Form):
                              widget=forms.Select(attrs={'class': 'form-control'}))
     max_viewers = forms.IntegerField(min_value=0, required=False,
                                      widget=forms.NumberInput(attrs={'class': 'form-control'}))
-    language = forms.CharField(required=False,
-        widget=forms.TextInput(attrs={'class': 'form-control'}))
+    language = forms.ChoiceField(choices=language_to_choice, required=False,
+                                 widget=forms.Select(attrs={'class': 'form-control'}))

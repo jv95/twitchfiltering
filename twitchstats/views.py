@@ -20,13 +20,14 @@ def index(request):
         game = request.GET.get('game')
         maxv = request.GET.get('max_viewers')
         language = request.GET.get('language')
-        form_updated = GetStreamsForm(initial={'game': game, 'max_viewers': maxv})
+        form_updated = GetStreamsForm(initial={'game': game, 'max_viewers': maxv, 'language': language})
 
         active_table_str = active_table_streams.objects.values()
         if maxv and language:
             stream_list = live_streams2.objects.values().filter(game_id=game,
-                                                                viewer_count__lte=maxv, language = language) if 'live_streams2' in active_table_str else live_streams.objects.values().filter(
-                game_id=game, viewer_count__lte=maxv, language= language)
+                                                                viewer_count__lte=maxv,
+                                                                language=language) if 'live_streams2' in active_table_str else live_streams.objects.values().filter(
+                game_id=game, viewer_count__lte=maxv, language=language)
         elif maxv:
             stream_list = live_streams2.objects.values().filter(game_id=game,
                                                                 viewer_count__lte=maxv) if 'live_streams2' in active_table_str else live_streams.objects.values().filter(
