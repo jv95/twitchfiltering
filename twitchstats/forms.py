@@ -1,28 +1,24 @@
-from django import forms
 import os
 import sys
 
 import django
 import yaml
+from django import forms
+
 from web.settings import BASE_DIR
 
 with open(BASE_DIR + '/twitchstats/settings.yaml', 'r') as yamlfile: cfg = yaml.load(yamlfile)
 sys.path.append(cfg['environment']['sys_path_append'])
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "web.settings")
 django.setup()
-from twitchstats.models import game_identity, active_table_games, game_identity2, active_table_streams, live_streams, \
-    live_streams2
+from twitchstats.models import game_identity, live_streams
 
-active_tb_games = active_table_games.objects.values()
-game_list = game_identity2.objects.values().order_by(
-    'game_name') if 'game_identity2' in active_tb_games else game_identity.objects.values().order_by('game_name')
+game_list = game_identity.objects.values().order_by('game_name')
 game_list_filtered = [d['game_name'] for d in game_list]
 id_list_filtered = [d['game_id'] for d in game_list]
 game_choices = zip(id_list_filtered, game_list_filtered)
 
-active_tb_streams = active_table_streams.objects.values()
-streams_list = live_streams2.objects.values(
-    'language').order_by('language').distinct() if 'live_streams2' in active_tb_streams else live_streams.objects.values(
+streams_list = live_streams.objects.values(
     'language').order_by('language').distinct()
 language_list = [d['language'] for d in streams_list]
 language_to_choice = zip(language_list, language_list)

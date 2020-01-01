@@ -30,15 +30,12 @@ class GamesManager:
         request_count = 1
         number_of_games = 0
         games_for_bulk = []
-        # current_active_table = active_table_games.objects.values().order_by('-id').first()
-        # current_inactive_table = game_identity2 if current_active_table['active_table'] == '<class \'twitchstats.models.game_identity\'>' else game_identity
 
         data_uploading_start_time = time.time()
         games = requests.get(ENDPOINT, headers=self.HEADER).json()
         paginator = games['pagination']['cursor']
         game_list = games['data']
         number_of_games += len(game_list)
-        # current_inactive_table.objects.all().delete()
 
         while paginator != '':
             games2 = requests.get(endpoint2 + paginator, headers=self.HEADER).json()
@@ -60,9 +57,6 @@ class GamesManager:
             else:
                 break
 
-        # active_table_games.objects.all().delete()
-        # new_active_table = active_table_games(active_table=str(current_inactive_table))
-        # new_active_table.save()
         performance_games = game_identity_performance(date=event_time,
                                                       number_of_games=number_of_games,
                                                       final_time=time.time() - data_uploading_start_time,
