@@ -14,7 +14,7 @@ with open('settings.yaml', 'r') as yamlfile: cfg = yaml.load(yamlfile)
 sys.path.append(cfg['environment']['sys_path_append'])
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "web.settings")
 django.setup()
-from twitchstats.models import live_streams, live_streams_performance
+from twitchfilter.models import live_streams, live_streams_performance
 from django.db import transaction
 
 

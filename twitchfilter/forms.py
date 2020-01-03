@@ -7,11 +7,11 @@ from django import forms
 
 from web.settings import BASE_DIR
 
-with open(BASE_DIR + '/twitchstats/settings.yaml', 'r') as yamlfile: cfg = yaml.load(yamlfile)
+with open(BASE_DIR + '/twitchfilter/settings.yaml', 'r') as yamlfile: cfg = yaml.load(yamlfile)
 sys.path.append(cfg['environment']['sys_path_append'])
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "web.settings")
 django.setup()
-from twitchstats.models import game_identity, live_streams
+from twitchfilter.models import game_identity, live_streams
 
 game_list = game_identity.objects.values().order_by('game_name')
 game_list_filtered = [d['game_name'] for d in game_list]

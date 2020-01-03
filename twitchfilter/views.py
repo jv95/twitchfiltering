@@ -7,12 +7,12 @@ from django.shortcuts import render
 
 from web.settings import BASE_DIR
 
-with open(BASE_DIR + '/twitchstats/settings.yaml', 'r') as yamlfile: cfg = yaml.load(yamlfile)
+with open(BASE_DIR + '/twitchfilter/settings.yaml', 'r') as yamlfile: cfg = yaml.load(yamlfile)
 sys.path.append(cfg['environment']['sys_path_append'])
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "web.settings")
 django.setup()
-from twitchstats.forms import GetStreamsForm
-from twitchstats.models import live_streams
+from twitchfilter.forms import GetStreamsForm
+from twitchfilter.models import live_streams
 
 
 def index(request):
@@ -24,17 +24,14 @@ def index(request):
         form_updated = GetStreamsForm(initial={'game': game, 'max_viewers': maxv, 'language': language})
 
         if maxv and language:
-            stream_list = live_streams.objects.values().filter(
-                game_id=game, viewer_count__lte=maxv, language=language)
+            stream_list = live_streams.objects.values().filter(game_id=game, viewer_count__lte=maxv, language=language)
         elif maxv:
-            stream_list = live_streams.objects.values().filter(
-                game_id=game, viewer_count__lte=maxv)
+            stream_list = live_streams.objects.values().filter(game_id=game, viewer_count__lte=maxv)
         else:
-            stream_list = live_streams.objects.values().filter(
-                game_id=game)
+            stream_list = live_streams.objects.values().filter(game_id=game)
         for d in stream_list:
             if d['thumbnail_url']:
                 value = str(d['thumbnail_url'])
                 d['thumbnail_url'] = value.replace('{width}x{height}', '315x178')
-        return render(request, 'templates/base.html', {'form': form_updated, 'response': stream_list})
-    return render(request, 'templates/base.html', {'form': form})
+        return render(request, 'twitchfilter/templates/base.html', {'form': form_updated, 'response': stream_list})
+    return render(request, 'twitchfilter/templates/base.html', {'form': form})

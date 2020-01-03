@@ -16,7 +16,7 @@ import yaml
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-with open(BASE_DIR + '/twitchstats/settings.yaml', 'r') as yamlfile: cfg = yaml.load(yamlfile)
+with open(BASE_DIR + '/web/settings.yaml', 'r') as yamlfile: cfg = yaml.load(yamlfile)
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
@@ -28,6 +28,9 @@ DEBUG = cfg['django']['debug']
 
 ALLOWED_HOSTS = cfg['django']['allowed_hosts']
 
+ROOT_HOSTCONF = 'web.hosts'  # Change `mysite` to the name of your project
+DEFAULT_HOST = 'www'  # Name of the default host, we will create it in the next steps
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -37,10 +40,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'twitchstats',
+    'django_hosts',
+    'twitchfilter',
+    'jv95'
 ]
 
 MIDDLEWARE = [
+    'django_hosts.middleware.HostsRequestMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -48,6 +54,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django_hosts.middleware.HostsResponseMiddleware',
 ]
 
 ROOT_URLCONF = 'web.urls'
@@ -55,7 +62,7 @@ ROOT_URLCONF = 'web.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'twitchstats/'), ],
+        'DIRS': [os.path.join(BASE_DIR, ''), ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

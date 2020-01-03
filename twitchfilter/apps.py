@@ -2,4 +2,4 @@ from django.apps import AppConfig
 
 
 class TwitchstatsConfig(AppConfig):
-    name = 'twitchstats'
+    name = 'twitchfilter'
