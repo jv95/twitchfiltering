@@ -17,18 +17,27 @@ from twitchfilter.models import live_streams
 
 def index(request):
     form = GetStreamsForm()
-    if request.GET.get('game'):
+    if request.GET:
         game = request.GET.get('game')
         maxv = request.GET.get('max_viewers')
         language = request.GET.get('language')
         form_updated = GetStreamsForm(initial={'game': game, 'max_viewers': maxv, 'language': language})
-
-        if maxv and language:
+        if maxv and language and game:
             stream_list = live_streams.objects.values().filter(game_id=game, viewer_count__lte=maxv, language=language)
+        elif game and language:
+            stream_list = live_streams.objects.values().filter(game_id=game, language=language)
         elif maxv:
+            stream_list = live_streams.objects.values().filter(viewer_count__lte=maxv)
+        elif maxv and game:
             stream_list = live_streams.objects.values().filter(game_id=game, viewer_count__lte=maxv)
-        else:
+        elif game:
             stream_list = live_streams.objects.values().filter(game_id=game)
+        elif language:
+            stream_list = live_streams.objects.values().filter(language=language)
+        elif language and maxv:
+            stream_list = live_streams.objects.values().filter(language=language, viewer_count__lte=maxv)
+        else:
+            stream_list = live_streams.objects.values().filter()
         for d in stream_list:
             if d['thumbnail_url']:
                 value = str(d['thumbnail_url'])
