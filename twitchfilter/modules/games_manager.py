@@ -30,7 +30,7 @@ class GamesManager:
         request_count = 1
         number_of_games = 0
         games_for_bulk = []
-
+        game_identity.objects.all().delete()
         data_uploading_start_time = time.time()
         games = requests.get(ENDPOINT, headers=self.HEADER).json()
         paginator = games['pagination']['cursor']

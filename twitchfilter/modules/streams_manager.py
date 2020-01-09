@@ -31,7 +31,7 @@ class StreamsManager:
         request_count = 1
         number_of_streams = 0
         streams_for_bulk = []
-
+        live_streams.objects.all().delete()
         data_uploading_start_time = time.time()
         streams = requests.get(ENDPOINT, headers=self.HEADER).json()
         paginator = streams['pagination']['cursor']
