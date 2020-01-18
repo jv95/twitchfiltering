@@ -12,7 +12,7 @@ import yaml
 
 with open('settings.yaml', 'r') as yamlfile: cfg = yaml.load(yamlfile)
 sys.path.append(cfg['environment']['sys_path_append'])
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "web.settings")
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'web.settings')
 django.setup()
 from twitchfilter.models import game_identity, game_identity_performance
 from django.db import transaction
@@ -20,13 +20,13 @@ from django.db import transaction
 
 class GamesManager:
     def __init__(self):
-        self.HEADER = {"Client-ID": cfg['twitch']['client_id']}
+        self.HEADER = {'Client-ID': cfg['twitch']['client_id']}
 
     @transaction.atomic
     def get_games(self):
         event_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        ENDPOINT = " https://api.twitch.tv/helix/games/top?first=100"
-        endpoint2 = " https://api.twitch.tv/helix/games/top?first=100&after="
+        ENDPOINT = ' https://api.twitch.tv/helix/games/top?first=100'
+        endpoint2 = ' https://api.twitch.tv/helix/games/top?first=100&after='
         request_count = 1
         number_of_games = 0
         games_for_bulk = []

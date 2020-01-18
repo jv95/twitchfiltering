@@ -12,7 +12,7 @@ import yaml
 
 with open('settings.yaml', 'r') as yamlfile: cfg = yaml.load(yamlfile)
 sys.path.append(cfg['environment']['sys_path_append'])
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "web.settings")
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'web.settings')
 django.setup()
 from twitchfilter.models import live_streams, live_streams_performance
 from django.db import transaction
@@ -21,13 +21,13 @@ from django.db import transaction
 class StreamsManager:
 
     def __init__(self):
-        self.HEADER = {"Client-ID": cfg['twitch']['client_id']}
+        self.HEADER = {'Client-ID': cfg['twitch']['client_id']}
 
     @transaction.atomic
     def get_streams(self):
         event_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        ENDPOINT = " https://api.twitch.tv/helix/streams?first=100"
-        endpoint2 = " https://api.twitch.tv/helix/streams?first=100&after="
+        ENDPOINT = ' https://api.twitch.tv/helix/streams?first=100'
+        endpoint2 = ' https://api.twitch.tv/helix/streams?first=100&after='
         request_count = 1
         number_of_streams = 0
         streams_for_bulk = []

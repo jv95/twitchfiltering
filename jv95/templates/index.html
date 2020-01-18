@@ -27,7 +27,7 @@
         <div class="col-md-8 w3-banner-left">
             <div class="w3-banner-left_txt">
                 <h3>WELCOME!</h3>
-                <p>Personal site to store my projects on.</p>
+                <p>This is my personal website.</p>
             </div>
         </div>
         <div class="col-md-4 w3-banner-right">
@@ -68,8 +68,8 @@
                         </div>
                         <div class="text-w3l">
                             <h4>Hobbies</h4>
-                            <p>Programming TV-shows Tesla SpaceX Reading</p>
-                            <p>Hiking Sleeping Cooking Investing Futurology</p>
+                            <p>Programming TV-shows Tesla SpaceX Books</p>
+                            <p>Hiking Investing Futurology</p>
                         </div>
                         <div class="clearfix"></div>
                     </div>
@@ -223,14 +223,14 @@
                 <div class="w3_head_pop contact_head">
                     <h3>CONTACT</h3>
                 </div>
-                <form action="#" method="post" name="sentMessage" id="contactForm">
+                <form method="post" name="sentMessage" id="contactForm">
                     {% csrf_token %}
 
                     <div class="col-lg-4 col-md-4 col-sm-4 contact-w3-grid" data-aos="zoom-in">
                         <div class="control-group form-group">
                             <div class="controls">
                                 <label>Full Name:</label>
-                                <input type="text" class="form-control" id="name" required
+                                <input type="text" class="form-control" id="name" name="name" required
                                        data-validation-required-message="Please enter your name.">
                                 <p class="help-block"></p>
                             </div>
@@ -240,7 +240,7 @@
                         <div class="control-group form-group">
                             <div class="controls">
                                 <label>Email Address:</label>
-                                <input type="email" class="form-control" id="email" required
+                                <input type="email" class="form-control" id="email" name="email" required
                                        data-validation-required-message="Please enter your email address.">
                             </div>
                         </div>
@@ -250,7 +250,7 @@
                         <div class="control-group form-group">
                             <div class="controls">
                                 <label>Message:</label>
-                                <textarea rows="10" cols="100" class="form-control" id="message" required
+                                <textarea rows="10" cols="100" class="form-control" id="message" name="message" required
                                           data-validation-required-message="Please enter your message" maxlength="999"
                                           style="resize:none"></textarea>
                             </div>

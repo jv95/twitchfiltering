@@ -9,7 +9,7 @@ from web.settings import BASE_DIR
 
 with open(BASE_DIR + '/twitchfilter/settings.yaml', 'r') as yamlfile: cfg = yaml.load(yamlfile)
 sys.path.append(cfg['environment']['sys_path_append'])
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "web.settings")
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'web.settings')
 django.setup()
 from twitchfilter.forms import GetStreamsForm
 from twitchfilter.models import live_streams
