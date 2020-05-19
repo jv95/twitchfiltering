@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     'django_hosts',
     'twitchfilter',
     'jv95',
-    'tweetstomail'
+    'subscribetoelon'
 ]
 
 if cfg['django']['logging']:
