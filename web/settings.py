@@ -42,7 +42,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django_hosts',
     'twitchfilter',
-    'jv95'
+    'jv95',
+    'tweetstomail'
 ]
 
 if cfg['django']['logging']:
